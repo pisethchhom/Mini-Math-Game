@@ -1,0 +1,78 @@
+@url = http://localhost:8000
+
+### get game
+GET {{url}}/api/games
+
+### get game_types from directus
+GET http://localhost:8055/items/game_category?fields=id,name,game_levels.id,game_levels.title HTTP/1.1
+Authorization: Bearer 2-PyKeaO4DUawAuiZ2pbbv18sV7Wff9O
+
+### get game_level from directus 
+GET http://localhost:8055/items/game_level?fields=id,title,short_description,game_category&filter[game_category][_eq]=c3c0921d-d38a-4e39-a02a-fd899fef33a4&filter[status][_eq]=published&sort[]=sort HTTP/1.1
+Authorization: Bearer 2-PyKeaO4DUawAuiZ2pbbv18sV7Wff9O
+
+### get games from directus
+GET http://localhost:8055/items/game?fields=*&filter[game_level_id][_eq]=e02b0890-5588-422a-aa72-ad1aea09366a HTTP/1.1
+Authorization: Bearer fyJDrfirbanC2ACZ0myZZT0JUUTLGdsL
+
+### get games from directus
+GET http://localhost:8055/items/game/e02b0890-5588-422a-aa72-ad1aea09366a?fields=*,game_level_id.*,answer_option.*,correct_answer_option.*
+Authorization: Bearer 2-PyKeaO4DUawAuiZ2pbbv18sV7Wff9O
+
+### post games from directus
+POST http://localhost:8055/items/game HTTP/1.1
+Authorization: Bearer XqqvZBOeZxvgyqxcmRweNF3STTGsrdDP
+Content-Type: application/json
+
+{
+    "game_level_id": "b1aa084b-e78a-41c2-960e-af7bb745f034",
+    "question": "What is 2+4?",
+    "correct_answer": "4",
+    "score": 5,
+    "game_type": "question_and_answer"
+}
+
+### post games progresses from directus
+POST http://localhost:8055/items/progress_history HTTP/1.1
+Authorization: Bearer fyJDrfirbanC2ACZ0myZZT0JUUTLGdsL
+Content-Type: application/json
+
+{
+    "player": "c53f03a5-39bc-4fc7-af8b-7eca6665363b",
+    "game": "d0fea9a8-c818-43a8-bf1c-74e64035efae",
+    "selected_answer": [],
+    "answer": "a",
+    "score": 0,
+    "session_id": "7b8b8d08-80da-4f03-8dba-6581dc764a8f"
+}
+
+### get players
+GET http://localhost:8055/items/player HTTP/1.1
+Authorization: Bearer fyJDrfirbanC2ACZ0myZZT0JUUTLGdsL
+
+### get progress_history
+GET http://localhost:8055/items/progress_history HTTP/1.1
+Authorization: Bearer fyJDrfirbanC2ACZ0myZZT0JUUTLGdsL
+
+### update user login
+PATCH  http://localhost:8055/items/player/fc53f03a5-39bc-4fc7-af8b-7eca6665363b HTTP/1.1
+Authorization: Bearer XqqvZBOeZxvgyqxcmRweNF3STTGsrdDP
+Content-Type: application/json
+
+{
+    "last_login_at": "2024-10-07T01:46:33.872038"
+}
+
+### update user login
+POST  http://localhost:8055/items/progress_history HTTP/1.1
+Authorization: Bearer XqqvZBOeZxvgyqxcmRweNF3STTGsrdDP
+Content-Type: application/json
+
+{
+    "player": "c53f03a5-39bc-4fc7-af8b-7eca6665363b", 
+    "game": "87d75778-4b71-4830-bb93-90f1ec5e9600", 
+    "selected_answer": "c1f608eb-56d2-4e3e-beb9-15aa56ae79b7", 
+    "answer": null, 
+    "score": 5, 
+    "session_id": "1f14699a-59d3-41ac-bba4-7a1528b53d1c"
+}
