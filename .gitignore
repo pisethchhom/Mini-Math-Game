@@ -104,6 +104,7 @@ docker-compose.yml.*
 .tool-versions
 
 data
+service-data
 
 # Virtualenv
 # taken from: https://github.com/github/gitignore/blob/main/Global/VirtualEnv.gitignore
