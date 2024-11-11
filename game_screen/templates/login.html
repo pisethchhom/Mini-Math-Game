@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Rubik:700&display=swap");
+
+        * {
+            box-sizing: border-box;
+        }
+
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        /* General Styles */
+        body {
+            font-family: "Rubik", sans-serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            min-height: 100vh;
+            background: url('https://assets.onecompiler.app/42ucxpp7p/42ucxbqge/%E2%80%94Slidesdocs%E2%80%94ruler%20pink%20cute%20education%20notebook_30bfd9074c.jpg') no-repeat center center;
+            background-size: cover;
+        }
+
+        /* Login Container */
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 16px;
+            border: 4px solid #EF9380;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            padding-right: 60px;
+            /* Extra space for show/hide password text */
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 20px;
+            top: 12px;
+            cursor: pointer;
+            color: #1CC491;
+            font-weight: bold;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 0;
+            background-color: #1CC491;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .text-link {
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .text-link a {
+            color: #1CC491;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <!-- <label for="username">Username:</label>
+            <input type="text" name="username" required> -->
+
+            <!-- Username Input -->
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+            <!-- <label for="password">Password:</label>
+            <input type="password" name="password" required> -->
+
+            <!-- Password Input with show/hide option inside the input field -->
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <span class="show-password" onclick="togglePassword()">Show</span>
+            </div>
+
+            <!-- <button type="submit">Login</button> -->
+            <button type="submit">Login</button>
+
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+
+            <!-- Text Link to Register -->
+            <div class="text-link">
+                Don't have an account?
+                <!-- <a href="index.html">Register</a> -->
+                <a href="{% url 'register' %}">Register Here</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordToggle = document.querySelector('.show-password');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.textContent = 'Hide';
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.textContent = 'Show';
+            }
+        }
+    </script>
+
+</body>
+
+</html>

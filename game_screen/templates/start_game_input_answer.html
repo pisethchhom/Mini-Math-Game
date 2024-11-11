@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Quiz Page</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Rubik:700&display=swap");
+
+        * {
+            box-sizing: border-box;
+        }
+
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        /* General Styles */
+        body {
+            font-family: "Rubik", sans-serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            min-height: 100vh;
+            background: url('https://assets.onecompiler.app/42ucxpp7p/42ucxbqge/%E2%80%94Slidesdocs%E2%80%94ruler%20pink%20cute%20education%20notebook_30bfd9074c.jpg') no-repeat center center;
+            background-size: cover;
+        }
+
+        /* Timer Container Styles */
+        .timer-container {
+            position: absolute;
+            top: 32px;
+            /* Padding from the top */
+            right: 32px;
+            /* Padding from the right */
+            background-color: #6BCEB5;
+            /* Timer background color */
+            border: 4px solid #E4FFF8;
+            /* Timer border color */
+            border-radius: 8px;
+            padding: 8px 16px;
+            /* Padding inside the timer */
+        }
+
+        /* Timer Styles */
+        .timer {
+            font-size: 1.5rem;
+            color: #382b22;
+            font-weight: 600;
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 32px 40px;
+            /* Increased padding */
+            border-radius: 16px;
+            border: 4px solid #EF9380;
+            /* 4px border with new color */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* .answer-input Styles */
+        .answer-input {
+            width: 100%;
+            /* Full width */
+            height: 100px;
+            /* Default height */
+            padding: 10px;
+            margin-bottom: 20px;
+            /* Space below the .answer-input */
+            border: 2px solid #FFCC77;
+            /* .answer-input border color */
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            /* Allow vertical resizing */
+        }
+
+        /* Standard Button Styles */
+        button.submit-button {
+            padding: 12px 48px;
+            /* Updated padding */
+            background-color: #FFCC77;
+            /* Changed background color */
+            border: 2px solid #FFCC77;
+            /* Button border color */
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #382b22;
+            transition: background 150ms ease-in-out;
+        }
+
+        button.submit-button:hover {
+            background-color: #FFD897;
+            /* Hover effect */
+        }
+
+        /* Popup Styling */
+        .popup {
+            position: fixed;
+            top: 80px;
+            /* 80px from the top */
+            left: 50%;
+            transform: translateX(-50%);
+            /* Ensures perfect centering */
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            z-index: 10;
+        }
+
+        .popup.correct {
+            background-color: rgba(40, 167, 69, 0.9);
+        }
+
+        .popup.incorrect {
+            background-color: rgba(220, 53, 69, 0.9);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="timer-container">
+        <div class="timer" id="timer">01:00</div>
+    </div>
+
+    <div class="quiz-container">
+        <h2>Typing Quiz Question</h2>
+        <p style="text-align: center;"> <a
+                href="{% url 'select-game' game.game_level_id.game_category game.game_level_id.id %}">Go Back</a></p>
+        <p>{{ game.question }}</p>
+
+        <form action="{% url 'start-game' game.id %}" method="post">
+            {% csrf_token %}
+            <input class="answer-input" type="text" name="answer" id="answer" placeholder="Type your answer here..." />
+            <button type="submit" class="submit-button">Submit Answer</button>
+        </form>
+        <!-- Popup for answer feedback -->
+        <div id="popup" class="popup"></div>
+    </div>
+
+    <script>
+        // The correct answer (Paris)
+        const correctAnswer = "Paris";
+        let seconds = 60; // Start at 60 seconds
+
+        // Timer function
+        function startTimer() {
+            const timerInterval = setInterval(() => {
+                seconds--;
+                const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const secs = String(seconds % 60).padStart(2, '0');
+                document.getElementById('timer').textContent = `${minutes}:${secs}`;
+
+                // Check if the timer has reached zero
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timer').textContent = "00:00";
+                    showTimeUpPopup();
+                }
+            }, 1000);
+        }
+
+        // Show time's up popup
+        function showTimeUpPopup() {
+            const popup = document.getElementById('popup');
+            popup.textContent = "Time's up!";
+            popup.className = 'popup incorrect'; // Use incorrect class for time's up
+            popup.style.display = 'block';
+
+            // Hide the popup after 2 seconds
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 2000);
+        }
+
+        function checkUserAnswer() {
+            // Get user input
+            const userInput = document.getElementById('userAnswer').value.trim();
+            const popup = document.getElementById('popup');
+
+            // Check if the answer is correct or incorrect
+            if (userInput.toLowerCase() === correctAnswer.toLowerCase()) {
+                popup.textContent = "Correct answer!";
+                popup.className = 'popup correct'; // Change the popup color to green
+            } else {
+                popup.textContent = "Incorrect answer!";
+                popup.className = 'popup incorrect'; // Change the popup color to red
+            }
+
+            // Show the popup
+            popup.style.display = 'block';
+
+            // Hide the popup after 2 seconds
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 2000);
+        }
+
+        // Start the timer when the page loads
+        window.onload = startTimer;
+    </script>
+
+</body>
+
+</html>

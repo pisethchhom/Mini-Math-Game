@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Page</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Rubik:700&display=swap");
+
+        * {
+            box-sizing: border-box;
+        }
+
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        /* General Styles */
+        body {
+            font-family: "Rubik", sans-serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            min-height: 100vh;
+            background: url('https://assets.onecompiler.app/42ucxpp7p/42ucxbqge/%E2%80%94Slidesdocs%E2%80%94ruler%20pink%20cute%20education%20notebook_30bfd9074c.jpg') no-repeat center center;
+            background-size: cover;
+        }
+
+        /* Timer Container Styles */
+        .timer-container {
+            position: absolute;
+            top: 32px;
+            /* Padding from the top */
+            right: 32px;
+            /* Padding from the right */
+            background-color: #6BCEB5;
+            /* Timer background color */
+            border: 4px solid #E4FFF8;
+            /* Timer border color */
+            border-radius: 8px;
+            padding: 8px 16px;
+            /* Padding inside the timer */
+        }
+
+        /* Timer Styles */
+        .timer {
+            font-size: 1.5rem;
+            color: #382b22;
+            font-weight: 600;
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 32px 40px;
+            /* Increased padding */
+            border-radius: 16px;
+            border: 4px solid #EF9380;
+            /* 4px border with new color */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Button Styles and Layout */
+        .answer-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            /* Increased gap for better spacing */
+        }
+
+        .answer-buttons button {
+            flex: 1 1 30%;
+            /* Keep 48% width for two buttons in a row */
+        }
+
+        /* Button Styling from Code Base */
+        button {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            outline: none;
+            border: 0;
+            vertical-align: middle;
+            text-decoration: none;
+            font-size: inherit;
+            font-family: inherit;
+        }
+
+        button.learn-more {
+            font-weight: 600;
+            color: #382b22;
+            padding: 1.25em 2em;
+            background: #FFF6E4;
+            border: 2px solid #FFCC77;
+            border-radius: 0.75em;
+            transform-style: preserve-3d;
+            transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
+        }
+
+        button.learn-more::before {
+            position: absolute;
+            content: "";
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #FFE8C2;
+            border-radius: inherit;
+            box-shadow: 0 0 0 2px #FFCC77, 0 0.625em 0 0 #FFF3DF;
+            transform: translate3d(0, 0.75em, -1em);
+            transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+        }
+
+        button.learn-more:hover {
+            background: #FFD897;
+            transform: translate(0, 0.25em);
+        }
+
+        button.learn-more:hover::before {
+            box-shadow: 0 0 0 2px #FFCC77, 0 0.5em 0 0 #FFF3DF;
+            transform: translate3d(0, 0.5em, -1em);
+        }
+
+        button.learn-more:active {
+            background: #FFD897;
+            transform: translate(0em, 0.75em);
+        }
+
+        button.learn-more:active::before {
+            box-shadow: 0 0 0 2px #FFCC77, 0 0 #FFF3DF;
+            transform: translate3d(0, 0, -1em);
+        }
+
+        /* Popup Styling */
+        .popup {
+            position: fixed;
+            top: 80px;
+            /* 80px from the top */
+            left: 50%;
+            transform: translateX(-50%);
+            /* Ensures perfect centering */
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            z-index: 10;
+        }
+
+        .popup.correct {
+            background-color: rgba(40, 167, 69, 0.9);
+        }
+
+        .popup.incorrect {
+            background-color: rgba(220, 53, 69, 0.9);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="timer-container">
+        <div class="timer" id="timer">01:00</div>
+    </div>
+
+    <div class="quiz-container">
+        <h2>Quiz Question</h2>
+
+        <p style="text-align: center;"> <a
+                href="{% url 'select-game' game.game_level_id.game_category game.game_level_id.id %}">Go Back</a></p>
+        <p>{{ game.question }}</p>
+
+        <form action="{% url 'start-game' game.id %}" method="post">
+            {% csrf_token %}
+            <div class="answer-buttons">
+                {% for option in game.answer_option %}
+                <button type="submit" name="answer" value="{{ option.id }}" class="learn-more">
+                    {{ option.answer }}</button>
+                {% endfor %}
+            </div>
+        </form>
+
+        <!-- Popup for answer feedback -->
+        <div id="popup" class="popup"></div>
+    </div>
+
+    <script>
+        // The correct answer (3 for Paris)
+        const correctAnswer = 3;
+        let seconds = 60; // Start at 60 seconds
+
+        function checkAnswer(button, answer) {
+            // Reference the popup element
+            const popup = document.getElementById('popup');
+
+            // Check if the answer is correct or incorrect
+            if (answer === correctAnswer) {
+                popup.textContent = "Correct answer!";
+                popup.className = 'popup correct'; // Change the popup color to green
+            } else {
+                popup.textContent = "Incorrect answer!";
+                popup.className = 'popup incorrect'; // Change the popup color to red
+            }
+
+            // Show the popup
+            popup.style.display = 'block';
+
+            // Hide the popup after 2 seconds
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 2000);
+        }
+
+        // Timer function
+        function startTimer() {
+            const timerInterval = setInterval(() => {
+                seconds--;
+                const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const secs = String(seconds % 60).padStart(2, '0');
+                document.getElementById('timer').textContent = `${minutes}:${secs}`;
+
+                // Check if the timer has reached zero
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timer').textContent = "00:00";
+                    showTimeUpPopup();
+                }
+            }, 1000);
+        }
+
+        // Show time's up popup
+        function showTimeUpPopup() {
+            const popup = document.getElementById('popup');
+            popup.textContent = "Time's up!";
+            popup.className = 'popup incorrect'; // Use incorrect class for time's up
+            popup.style.display = 'block';
+
+            // Hide the popup after 2 seconds
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 2000);
+        }
+
+        // Start the timer when the page loads
+        window.onload = startTimer;
+    </script>
+
+</body>
+
+</html>
