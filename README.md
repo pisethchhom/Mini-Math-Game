@@ -10,13 +10,19 @@ Mini Math Game is an educational platform designed to enhance the arithmetic and
 
 ## Features
 
-- **Interactive Games**: Includes quizzes for arithmetic, geometry, and sorting tasks with dynamic difficulty levels.
-- **Role-Based Access**: Teachers and students have distinct roles for appropriate access.
-- **Performance Tracking**: Real-time scoring and performance analytics for students.
-- **Admin Dashboard**: Managed via Directus, enabling teachers to create quizzes and monitor student progress.
-- **Database Management**: Dual database system:
-  - **PostgreSQL**: For structured data like users and quiz metadata.
-  - **MongoDB**: For session data and detailed performance logs.
+- **Dynamic game questions**: Teacher or admin can create and assign game dynamically based on a game type and a difficulty level.
+- **Admin dashboard**: This project utilised Directus CMS functionality which enabled admin to:
+  - manage game content
+  - monitor player information and progress
+  - create new user and assign to specific role with permissions
+
+## Project technologies
+
+- **Frontend**: HTML, CSS, Javascript
+- **Backend**: Django
+- **Admin Dashboard**: Directus
+- **Cache**: Redis
+- **Database**: MongoDB and PostgreSQL
 
 ---
 
@@ -38,7 +44,11 @@ proceeding to the installation.
    git clone https://github.com/pisethchhom/Mini-Math-Game.git
    cd Mini-Math-Game
    ```
-2. Reset to default game data (Optional):
+2. Copy .env.example to .env:
+   ```bash
+   cp .env.example .env
+   ```
+3. Reset to default game data (Optional):
    ```bash
    make reset
    ```
