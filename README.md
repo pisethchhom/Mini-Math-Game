@@ -1,7 +1,5 @@
 # Mini Math Game
 
----
-
 ## Overview
 
 Mini Math Game is an educational platform designed to enhance the arithmetic and logical skills of primary school students through interactive games and quizzes. The project is built using Django for the game interface and Directus as the CMS for administrative functions. PostgreSQL is used as the game database and MongoDB is used for session management. The game supports quick deployment using Docker.
@@ -18,11 +16,17 @@ Mini Math Game is an educational platform designed to enhance the arithmetic and
 
 ## Project technologies
 
-- **Frontend**: HTML, CSS, Javascript
-- **Backend**: Django
-- **Admin Dashboard**: Directus
-- **Cache**: Redis
-- **Database**: MongoDB and PostgreSQL
+- **Frontend**:
+  - [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+  - [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+  - [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- **Backend**:
+  - [![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
+- **Admin Dashboard**:
+  - [![Directus](https://img.shields.io/badge/Directus-2D69E0?style=for-the-badge&logo=directus&logoColor=white)](https://directus.io/)
+- **Database**:
+  - [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+  - [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 ---
 
