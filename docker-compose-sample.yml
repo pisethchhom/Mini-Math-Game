@@ -1,0 +1,147 @@
+version: "3.5"
+services:
+  # DJANGO PROJECT CONTAINER
+  game_server:
+    container_name: math_game_server
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/app  
+    env_file: 
+      - .env
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_DB_NAME=${MONGO_DB_NAME}
+      - MONGO_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      # create a user with role api-gateway and gen a new static token to use here
+      - DIRECTUS_TOKEN=${DIRECTUS_TOKEN} 
+      - DIRECTUS_API_ENDPOINT=http://directus:8055
+      - MONGO_COLLECTION=${MONGO_COLLECTION}
+    networks: 
+      - game-server-network
+      - directus-network
+    depends_on:
+      mongo:
+        condition: service_started
+      directus:
+        condition: service_started
+    command: >
+      sh -c "
+        python manage.py migrate && 
+        python manage.py runserver 0.0.0.0:8000
+      "
+    
+  # MONGODB CONTAINER
+  mongo:
+    image: mongo:latest
+    container_name: math_game_mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - ./service-data/mongo-data:/data/db  
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DB_NAME}
+    networks: 
+      - game-server-network
+
+  # MONGO ADMIN CONTAINER
+  mongo-express:
+    image: mongo-express
+    container_name: math_game_mongodb_dashboard
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - MONGOEXPRESS_LOGIN=${MONGOEXPRESS_LOGIN}
+      - MONGOEXPRESS_PASSWORD=${MONGOEXPRESS_PASSWORD}
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGOEXPRESS_LOGIN}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGOEXPRESS_PASSWORD}
+    networks: 
+      - game-server-network
+    depends_on:
+      mongo:
+        condition: service_started
+
+  # POSTGRESQL CONTAINER
+  database:
+    image: postgis/postgis:13-master
+    container_name: math_game_admin_dashboard_database
+    networks: 
+      - directus-network
+    volumes:
+      - ./service-data/database:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD", "pg_isready", "--host=localhost", "--username=directus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      # start_interval: 5s
+      start_period: 30s
+
+  # REDIS CONTAINER
+  cache:
+    image: redis:6
+    container_name: math_game_admin_dashboard_redis
+    networks: 
+      - directus-network
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(redis-cli ping) = 'PONG' ]"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      # start_interval: 5s
+      start_period: 30s
+
+  # DIRECTUS CONTAINER
+  directus:
+    image: directus/directus:11.1.0
+    container_name: math_game_admin_dashboard
+    restart: always
+    ports:
+      - 8055:8055
+    volumes:
+      - ./service-data/directus/database:/directus/database
+      - ./service-data/directus/uploads:/directus/uploads
+      - ./service-data/directus/extensions:/directus/extensions
+      - ./service-data/directus/templates:/directus/templates
+    environment:
+      - SECRET=${SECRET}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - DB_CLIENT=pg
+      - DB_PORT=5432
+      - DB_HOST=database
+      - DB_USER=${POSTGRES_USER}
+      - DB_DATABASE=${POSTGRES_DB}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - CACHE_STORE=redis
+      - CACHE_ENABLED=true
+      - CACHE_AUTO_PURGE=true
+      - REDIS=redis://cache:6379
+    networks: 
+      - directus-network
+    depends_on:
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+
+networks:
+  game-server-network:
+    driver: bridge
+  directus-network:
+    driver: bridge
