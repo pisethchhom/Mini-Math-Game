@@ -48,15 +48,19 @@ proceeding to the installation.
    git clone https://github.com/pisethchhom/Mini-Math-Game.git
    cd Mini-Math-Game
    ```
-2. Copy .env.example to .env:
+2. Create .env file:
    ```bash
    cp .env.example .env
    ```
-3. Reset to default game data (Optional):
+3. Create docker-compose file:
+   ```bash
+   cp docker-compose-sample.yml docker-compose.yml
+   ```
+4. Reset to default game data (Optional):
    ```bash
    make reset
    ```
-4. Start the project using docker compose:
+5. Start the project using docker compose:
    ```bash
    docker-compose up -d
    ```
