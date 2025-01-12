@@ -88,6 +88,36 @@ proceeding to the installation.
 
 ---
 
+## Images
+### Project Architecture
+![Project Architecture](./game_images/architecture.webp)
+
+### Gameplay Screens
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+  <img src="./game_images/game-screen-0.webp" alt="login screen" width="256"/>
+  <img src="./game_images/game-screen-1.webp" alt="register screen" width="256"/>
+  <img src="./game_images/game-screen-2.webp" alt="game type" width="256"/>
+  <img src="./game_images/game-screen-3.webp" alt="game level" width="256"/>
+  <img src="./game_images/game-screen-4.webp" alt="select answer option" width="256"/>
+  <img src="./game_images/game-screen-5.webp" alt="question and answer" width="256"/>
+</div>
+
+### Admin Dashboard
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+  <img src="./game_images/admin-dashboard-0.webp" alt="Admin dashboard record detail" width="256"/>
+  <img src="./game_images/admin-dashboard-1.webp" alt="Admin dashboard game category" width="256"/>
+  <img src="./game_images/admin-dashboard-2.webp" alt="Admin dashboard player" width="256"/>
+  <img src="./game_images/admin-dashboard-3.webp" alt="Admin dashboard progress history" width="256"/>
+</div>
+
+### Mongo Express
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+  <img src="./game_images/mongo-express-0.webp" alt="Mongo sample record list" width="256"/>
+  <img src="./game_images/mongo-express-1.webp" alt="Mongo sample record detail" width="256"/>
+</div>
+
+---
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
