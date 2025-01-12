@@ -93,27 +93,27 @@ proceeding to the installation.
 ![Project Architecture](./game_images/architecture.webp)
 
 ### Gameplay Screens
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="./game_images/game-screen-0.webp" alt="login screen" width="320"/>
-  <img src="./game_images/game-screen-1.webp" alt="register screen" width="320"/>
-  <img src="./game_images/game-screen-2.webp" alt="game type" width="320"/>
-  <img src="./game_images/game-screen-3.webp" alt="game level" width="320"/>
-  <img src="./game_images/game-screen-4.webp" alt="select answer option" width="320"/>
-  <img src="./game_images/game-screen-5.webp" alt="question and answer" width="320"/>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+  <img src="./game_images/game-screen-0.webp" alt="login screen" style="width: 30%; max-width: 320px; height: auto;"/>
+  <img src="./game_images/game-screen-1.webp" alt="register screen" style="width: 30%; max-width: 320px; height: auto;"/>
+  <img src="./game_images/game-screen-2.webp" alt="game type" style="width: 30%; max-width: 320px; height: auto;"/>
+  <img src="./game_images/game-screen-3.webp" alt="game level" style="width: 30%; max-width: 320px; height: auto;"/>
+  <img src="./game_images/game-screen-4.webp" alt="select answer option" style="width: 30%; max-width: 320px; height: auto;"/>
+  <img src="./game_images/game-screen-5.webp" alt="question and answer" style="width: 30%; max-width: 320px; height: auto;"/>
 </div>
 
 ### Admin Dashboard
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="./game_images/admin-dashboard-0.webp" alt="Admin dashboard record detail" width="320"/>
-  <img src="./game_images/admin-dashboard-1.webp" alt="Admin dashboard game category" width="320"/>
-  <img src="./game_images/admin-dashboard-2.webp" alt="Admin dashboard player" width="320"/>
-  <img src="./game_images/admin-dashboard-3.webp" alt="Admin dashboard progress history" width="320"/>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+  <img src="./game_images/admin-dashboard-0.webp" alt="Admin dashboard record detail" style="width: 30%; max-width: 320px; height: auto;"/>
+  <img src="./game_images/admin-dashboard-1.webp" alt="Admin dashboard game category" style="width: 30%; max-width: 320px; height: auto;"/>
+  <img src="./game_images/admin-dashboard-2.webp" alt="Admin dashboard player" style="width: 30%; max-width: 320px; height: auto;"/>
+  <img src="./game_images/admin-dashboard-3.webp" alt="Admin dashboard progress history" style="width: 30%; max-width: 320px; height: auto;"/>
 </div>
 
 ### Mongo Express
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="./game_images/mongo-express-0.webp" alt="Mongo sample record list" width="320"/>
-  <img src="./game_images/mongo-express-1.webp" alt="Mongo sample record detail" width="320"/>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+  <img src="./game_images/mongo-express-0.webp" alt="Mongo sample record list" style="width: 30%; max-width: 320px; height: auto;"/>
+  <img src="./game_images/mongo-express-1.webp" alt="Mongo sample record detail" style="width: 30%; max-width: 320px; height: auto;"/>
 </div>
 
 ---
